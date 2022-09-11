@@ -1,0 +1,12 @@
+.card-advert-home {
+    max-height: 450px !important;
+    height: 100% !important;
+    min-height: 100% !important;
+}
+
+.card-advert-home .card-body {
+    min-height: 350px !important;
+    height: 100% !important;
+    max-height: 350px !important;
+
+}

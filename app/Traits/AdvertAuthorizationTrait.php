@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Traits;
+
+
+use Fluent\Auth\Config\Services;
+
+trait AdvertAuthorizationTrait
+{
+    /**
+     * Verifica se o usuário que está logando é um superadmin
+     *
+     * @return boolean
+     */
+    public function isSuperadmin(): bool
+    {
+        $builder = Services::auth()
+            ->getProvider()
+            ->instance()
+            ->join('superadmins', 'superadmins.user_id = users.id')
+            ->where('superadmins.user_id', $this->id);
+        return $builder->first() !== null;
+    }
+}
