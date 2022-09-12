@@ -29,7 +29,7 @@
                 </li>
 
                 <li class="<?= url_is("{$locale}/dashboard/adverts/my") ? 'active' : ''; ?>">
-                    <a href="<?= route_to('adverts.my'); ?>">
+                    <a href="<?= route_to('adverts.my'); ?>" class="btn-gn">
                         <i class="fa fa-external-link mr-2"></i>
                         <?= lang('App.sidebar.dashboard.my_adverts'); ?>
                     </a>

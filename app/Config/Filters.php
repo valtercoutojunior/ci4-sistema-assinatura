@@ -12,8 +12,7 @@ use CodeIgniter\Filters\InvalidChars;
 use CodeIgniter\Filters\SecureHeaders;
 
 use App\Filters\HasSubscriptionFilter; //Filtro de incrição
-
-
+use App\Filters\PaymentFilter; //Filtro de pagamento
 
 class Filters extends BaseConfig
 {
@@ -56,6 +55,7 @@ class Filters extends BaseConfig
         'subscription' => [
             AuthFilter::class,
             HasSubscriptionFilter::class,
+            PaymentFilter::class,
         ],
     ];
 
