@@ -21,8 +21,8 @@
                     </a>
                 </li>
 
-                <li class="<?= url_is("{$locale}/dashboard/adverts/my-plan") ? 'active' : ''; ?>">
-                    <a href="<?= route_to('my.plan'); ?>">
+                <li class="<?= url_is("{$locale}/dashboard/my-plan") ? 'active' : ''; ?>">
+                    <a href="<?= route_to('my.plan'); ?>" class="btn-gn">
                         <i class="fa fa-bookmark-o mr-2"></i>
                         <?= lang('App.sidebar.dashboard.my_plan'); ?>
                     </a>
@@ -38,11 +38,20 @@
                 <li>
                     <a href="">
                         <i class="fa fa-bookmark-o mr-2">
-                        </i>Favourite Ads <span>5</span></a>
+                        </i>Favourite Ads <span>5</span>
+                    </a>
                 </li>
 
-                <li><a href=""><i class="fa fa-file-archive-o mr-2"></i>Archived Ads <span>12</span></a></li>
-                <li><a href=""><i class="fa fa-bolt mr-2"></i>Pending Approval<span>23</span></a></li>
+                <li>
+                    <a href=""><i class="fa fa-file-archive-o mr-2">
+                        </i>Archived Ads <span>12</span>
+                    </a>
+                </li>
+                <li>
+                    <a href=""><i class="fa fa-bolt mr-2">
+                        </i>Pending Approval<span>23</span>
+                    </a>
+                </li>
 
                 <?= form_open('logout'); ?>
                 <button type="submit" class="btn btn-default bg-white py-2 pl-2 text-dark">

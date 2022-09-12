@@ -19,11 +19,7 @@
     <div class="container">
         <!-- Row Start -->
         <div class="row">
-
-
             <?= $this->include('Dashboard/Layout/sidebar_user_data'); ?>
-
-
             <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-0">
                 <!-- Recently Favorited -->
                 <div class="widget dashboard-container my-adslist">
@@ -120,12 +116,13 @@
                                                                 <tbody>
                                                                     <tr>
                                                                         <th scope="row">
-                                                                            <?php echo $subscription->subscription_id; ?>
+                                                                            <?= $subscription->subscription_id; ?>
                                                                         </th>
-                                                                        <td><?php echo $subscription->features->value_details; ?>
+                                                                        <td><?= $subscription->features->value_details; ?>
                                                                         </td>
-                                                                        <td><?php echo $subscription->status; ?></td>
-                                                                        <td><?php echo date('d-m-Y', strtotime($subscription->history['next_execution'])); ?>
+                                                                        <td><?= $subscription->status; ?></td>
+                                                                        <td><?= date('d-m-Y', strtotime($subscription->history['next_execution']));
+                                                                            ?>
                                                                         </td>
                                                                     </tr>
 
@@ -148,10 +145,10 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr>
-                                                                        <th scope="row"><?php echo $subscription->plan_id . ' - ' . $subscription->features->plan_name; ?></th>
+                                                                        <th scope="row"><?= $subscription->plan_id . ' - ' . $subscription->features->name; ?></th>
 
                                                                         <td>
-                                                                            <?php echo $subscription->features->adverts ?? 'Ilimitado'; ?>
+                                                                            <?= $subscription->features->adverts ?? 'Ilimitado'; ?>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
@@ -174,20 +171,20 @@
                                                                 <tbody>
                                                                     <?php foreach ($subscription->history['history'] as $history) : ?>
                                                                         <tr>
-                                                                            <th scope="row"><?php echo $history['charge_id']; ?></th>
+                                                                            <th scope="row"><?= $history['charge_id']; ?></th>
 
                                                                             <td>
 
-                                                                                <?php echo reason_charge($history['status']); ?>
+                                                                                <?= reason_charge($history['status']); ?>
 
                                                                                 <?php if ($history['status'] == 'waiting' || $history['status'] == 'unpaid') : ?>
 
-                                                                                    <?php echo anchor(route_to('detail.charge', $history['charge_id']), 'Quero ver se foi paga', ['class' => 'btn btn-sm btn-primary btn-gn']); ?>
+                                                                                    <?= anchor(route_to('detail.charge', $history['charge_id']), 'Quero ver se foi paga', ['class' => 'btn btn-sm btn-primary btn-gn']); ?>
 
                                                                                 <?php endif; ?>
 
                                                                             </td>
-                                                                            <td><?php echo date('d-m-Y H:i:s', strtotime($history['created_at'])); ?>
+                                                                            <td><?= date('d-m-Y H:i:s', strtotime($history['created_at'])); ?>
                                                                             </td>
                                                                         </tr>
                                                                     <?php endforeach; ?>
@@ -216,11 +213,11 @@
 
                                                 <p>O cancelamento de uma Assinatura é realizado de forma imediata e automática. No entanto, é importante lembrar que somente é válido para os futuros lançamentos. Os débitos já realizados permanecem inalterados.</p>
 
-                                                <p class="text-warning">Esta ação não poderá ser revertida.</p>
+                                                <h4 class="text-danger text-center">Esta ação não poderá ser revertida.</h4>
                                             </div>
                                             <div class="modal-footer">
 
-                                                <?php echo form_open(route_to('dashboard.cancel.subscription'), hidden: $hiddens); ?>
+                                                <?php echo form_open(route_to('my.subscription.cancel'), hidden: $hiddens); ?>
 
                                                 <button type="submit" class="btn btn-sm btn-danger btn-gn">Sim, mete bronca</button>
 

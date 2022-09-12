@@ -37,12 +37,9 @@ class DashboardController extends BaseController
             ],
 
         ];
-
-        echo '<pre>';
-        print_r($data);
-        exit;
         return view('Dashboard/Home/my_plan', $data);
     }
+
     /*** Mostar a view com os dados do usuário para serem atualizados */
     public function profile()
     {
@@ -79,6 +76,7 @@ class DashboardController extends BaseController
         ];
         return view('Dashboard/Home/access', $data);
     }
+
     /*** Envia os dados que o usuário atualize a sua senha */
     public function updateAccess()
     {
@@ -90,5 +88,11 @@ class DashboardController extends BaseController
         $this->userRequest->validateBeforeSave('access_update', respondWithRedirect: true);
         $this->userService->tryUpdateAccess($request->password);
         return redirect()->back()->with('success', lang('App.success_saved'));
+    }
+
+    public function cancelSubscription()
+    {
+        $this->gerencianetService->cancelSubscription();
+        return redirect()->route('dashboard')->with('success', "Sua assinatura foi cancelada com sucesso!");
     }
 }

@@ -224,8 +224,6 @@ class GerencianetService
         try {
             $api = new Gerencianet($this->options);
             $response = $api->detailSubscription($params, []);
-            // echo '<pre>' . json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</pre>';
-            // exit;
             return $response['data'];
         } catch (GerencianetException $e) {
             log_message('error', '[ERROR] {exception}', ['exception' => $e]);
@@ -251,7 +249,7 @@ class GerencianetService
             $details = $this->detailsSubscription($this->userSubscription->subscription_id);
 
             if ($details['status'] == self::STATUS_CANCELED) {
-                $this->subscriptionService->tryDestroyUserSubscrition($this->userSubscription->subscription_id);
+                $this->subscriptionService->tryDestroyUserSubscription($this->userSubscription->subscription_id);
                 //user não terá mais assinatura em nosso lado
                 return null;
             }
@@ -276,19 +274,39 @@ class GerencianetService
         return $message;
     }
 
+    public function cancelSubscription()
+    {
+        $this->getUserSubscription();
+
+        $params = ['id' => $this->userSubscription->subscription_id];
+
+        try {
+            $api = new Gerencianet($this->options);
+            $response = $api->cancelSubscription($params, []);
+            $this->subscriptionService->tryDestroyUserSubscription($this->userSubscription->subscription_id);
+        } catch (GerencianetException $e) {
+            log_message('error', '[ERROR] {exception}', ['exception' => $e->errorDescription]);
+            die('Erro ao tentar cancelar assinatura na gerencianet');
+        } catch (\Exception $e) {
+            log_message('error', '[ERROR] {exception}', ['exception' => $e]);
+            die('Erro ao tentar cancelar assinatura');
+        }
+    }
+
+
     public function userHasSubscription(): bool
     {
         return $this->subscriptionService->userHasSubscription();
     }
 
-    private function defineSubscriptionSituation(array $datails): bool
+    private function defineSubscriptionSituation(array $details): bool
     {
         if (empty($details)) {
             return false;
         }
         $this->userSubscription->status     = $details['status'];
         $this->userSubscription->history    = $details;
-        return $this->handleBillingHistory($datails['history']);
+        return $this->handleBillingHistory($details['history']);
     }
 
     private function handleBillingHistory(array $history): bool

@@ -11,6 +11,8 @@ use CodeIgniter\Filters\Honeypot;
 use CodeIgniter\Filters\InvalidChars;
 use CodeIgniter\Filters\SecureHeaders;
 
+use App\Filters\HasSubscriptionFilter; //Filtro de incrição
+
 
 
 class Filters extends BaseConfig
@@ -49,6 +51,11 @@ class Filters extends BaseConfig
         'auth_verified' => [
             AuthFilter::class,
             \Fluent\Auth\Filters\EmailVerifiedFilter::class,
+        ],
+
+        'subscription' => [
+            AuthFilter::class,
+            HasSubscriptionFilter::class,
         ],
     ];
 

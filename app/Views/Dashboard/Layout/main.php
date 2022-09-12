@@ -85,8 +85,19 @@
   <script src="<?= site_url('web/plugins/smoothscroll/SmoothScroll.min.js'); ?>"></script>
   <script src="<?= site_url('web/js/scripts.js'); ?>"></script>
   <script src="<?= site_url('manager_assets/assets/vendor/toastr/toastr.min.js'); ?>"></script>
+  <script src="<?= site_url('web/plugins/loadingoverlay/loadingoverlay.min.js'); ?>"></script>
   <?= $this->renderSection('scripts'); ?>
+  <script>
+    $(document).ready(function() {
 
+      $('.btn-gn').on('click', function() {
+        $.LoadingOverlay("show", {
+          background: "rgba(52, 52, 52, 0.7)"
+        });
+      });
+
+    });
+  </script>
 </body>
 
 </html>

@@ -4,17 +4,14 @@ $routes->group('{locale}/dashboard', ['namespace' => 'App\Controllers\Dashboard'
 
     $routes->get('/', 'DashboardController::index', ['filter' => 'verified', 'as' => 'dashboard']);
     $routes->get('my-plan', 'DashboardController::myPlan', ['as' => 'my.plan']);
+    $routes->delete('cancel-subscription', 'DashboardController::cancelSubscription', ['as' => 'my.subscription.cancel']);
     $routes->get('profile', 'DashboardController::profile', ['filter' => 'confirm', 'as' => 'profile']);
     $routes->put('profile-update', 'DashboardController::updateProfile', ['as' => 'profile.update']);
     $routes->get('access', 'DashboardController::access', ['filter' => 'confirm', 'as' => 'access']);
     $routes->put('access-update', 'DashboardController::updateAccess', ['as' => 'access.update']);
 
-    //user Adverts
-
-    /**
-     * @todo Criar filtro de subcription
-     */
-    $routes->group('adverts', ['namespace' => 'App\Controllers\Dashboard'], function ($routes) {
+    //user Adverts   
+    $routes->group('adverts', ['namespace' => 'App\Controllers\Dashboard', 'filter' => 'subscription'], function ($routes) {
         $routes->get('my', 'AdvertsUserController::index', ['as' => 'adverts.my']);
         $routes->get('my-archived', 'AdvertsUserController::archived', ['as' => 'my.archived.adverts']);
         $routes->get('get-all-my-adverts', 'AdvertsUserController::getUserAdverts', ['as' => 'get.all.my.adverts']);

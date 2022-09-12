@@ -60,7 +60,7 @@ class SubscriptionService
         return $this->getUserSubscription() !== null;
     }
 
-    public function tryDestroyUserSubscrition(int $subscriptionID)
+    public function tryDestroyUserSubscription(int $subscriptionID)
     {
         try {
             return $this->subscriptionModel->destroyUserSubscrition($subscriptionID);
@@ -68,8 +68,6 @@ class SubscriptionService
             die('Error on detroy on service');
         }
     }
-
-
 
     /**
      * metodo que retorna as caracteristicas do plano adquirido no momento da assinatura
