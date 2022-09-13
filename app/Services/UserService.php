@@ -14,7 +14,7 @@ class UserService
 
     public function __construct()
     {
-        $this->user         = service('auth')->user();
+        $this->user       = service('auth')->user();
         $this->userModel  = Factories::models(UserModel::class);
     }
 
@@ -70,5 +70,24 @@ class UserService
     public function currentPasswordIsValid(string $currentPassword): bool
     {
         return Hash::check($currentPassword, $this->user->password);
+    }
+
+    public function deleteUserAccount()
+    {
+        try {
+
+            $gerencianetService = Factories::class(GerencianetService::class);
+            $userSubscription = $gerencianetService->getUserSubscription();
+
+
+            if ($gerencianetService->userHasSubscription()) {
+                $gerencianetService->cancelSubscription();
+            }
+            $this->userModel->deleteUserAccount();
+            service('auth')->logout();
+        } catch (\Exception $e) {
+            log_message('error', '[ERROR] {exception}', ['exception' => $e]);
+            die('Erro ao tentar atualizar o seu acesso');
+        }
     }
 }

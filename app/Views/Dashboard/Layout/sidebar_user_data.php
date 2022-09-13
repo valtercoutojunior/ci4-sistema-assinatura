@@ -2,14 +2,12 @@
     <div class="sidebar">
         <!-- User Widget -->
         <div class="widget user-dashboard-profile">
-            <!-- User Image -->
-            <div class="profile-thumb">
-                <img src="images/user/user-thumb.jpg" alt="" class="rounded-circle">
-            </div>
             <!-- User Name -->
-            <h5 class="text-center">Samanta Doe</h5>
-            <p>Joined February 06, 2017</p>
-            <a href="<?= route_to('profile'); ?>" class="btn btn-main-sm">Edit Profile</a>
+            <h5 class="text-center"><?= auth()->user()->name ?? auth()->user()->username; ?></h5>
+            <p><?= lang('App.sidebar.dashboard.user_since'); ?><?= auth()->user()->created_at->humanize(); ?></p>
+            <a href="<?= route_to('profile'); ?>" class="btn btn-main-sm">
+                <?= lang('App.sidebar.dashboard.profile'); ?>
+            </a>
         </div>
         <!-- Dashboard Links -->
         <div class="widget user-dashboard-menu">
@@ -59,7 +57,15 @@
                 </button>
 
                 <?= form_close(); ?>
-                <li><a href=""><i class="fa fa-power-off"></i>Delete Account</a></li>
+
+
+                <li class="<?= url_is("{$locale}/dashboard/confirm-deletion-account") ? 'active' : ''; ?>">
+                    <a href="<?= route_to('confirm.deletion.account'); ?>" class="text-danger">
+                        <i class="fa fa-power-off mr-2"></i>
+                        <?= lang('App.sidebar.dashboard.delete_account'); ?>
+                    </a>
+                </li>
+
             </ul>
         </div>
     </div>

@@ -14,9 +14,12 @@ return [
             'plans'         => 'Planos de Assinaturas',
         ],
         'dashboard' => [
-            'dashboard'     => 'Principal',
-            'my_adverts'    => 'Meus anúncios',
-            'my_plan'       => 'Meu plano',
+            'dashboard'         => 'Principal',
+            'my_adverts'        => 'Meus anúncios',
+            'my_plan'           => 'Meu plano',
+            'user_since'        => 'Está conosco desde ',
+            'profile'           => 'Meus dados',
+            'delete_account'    => 'Excluir minha conta',
         ],
     ],
 

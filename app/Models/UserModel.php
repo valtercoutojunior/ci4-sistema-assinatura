@@ -74,4 +74,16 @@ class UserModel extends Model implements UserProviderInterface
     {
         return $this->join('superadmins', 'superadmins.user_id = users.id')->first();
     }
+
+    public function deleteUserAccount()
+    {
+        try {
+            $this->db->transStart();
+            $this->delete(service('auth')->user()->id, purge: true);
+            $this->db->transCommit();
+        } catch (\Exception $e) {
+            log_message('error', '[ERROR] {exception}', ['exception' => $e]);
+            die('Error delete user account');
+        }
+    }
 }

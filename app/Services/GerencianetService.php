@@ -370,7 +370,6 @@ class GerencianetService
     {
         $chargeData = esc($chargeData);
         $charge = new stdClass;
-
         $charge->charge_id          = $chargeData['charge_id'];
         $charge->payment_method     = $chargeData['payment']['method'];
         $charge->status             = $chargeData['status'];

@@ -105,4 +105,21 @@ class DashboardController extends BaseController
         $charge =  $this->gerencianetService->detailCharge($chargeID);
         return redirect()->back()->with('charge', $charge);
     }
+
+    public function confirmDeleteAccount()
+    {
+        $data = [
+            'title' => 'Confirme para deletar a sua conta',
+            'hiddens' => [
+                '_method'   => 'DELETE',
+            ],
+        ];
+        return view('Dashboard/Home/confirm_delete_account', $data);
+    }
+
+    public function accountDelete()
+    {
+        $this->userService->deleteUserAccount();
+        return redirect()->route('web.home');
+    }
 }

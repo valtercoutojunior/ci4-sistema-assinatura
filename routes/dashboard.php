@@ -10,6 +10,9 @@ $routes->group('{locale}/dashboard', ['namespace' => 'App\Controllers\Dashboard'
     $routes->put('profile-update', 'DashboardController::updateProfile', ['as' => 'profile.update']);
     $routes->get('access', 'DashboardController::access', ['filter' => 'confirm', 'as' => 'access']);
     $routes->put('access-update', 'DashboardController::updateAccess', ['as' => 'access.update']);
+    //Account
+    $routes->get('confirm-deletion-account', 'DashboardController::confirmDeleteAccount', ['as' => 'confirm.deletion.account', 'filter' => 'confirm']);
+    $routes->delete('account-delete', 'DashboardController::accountDelete', ['as' => 'account.delete', 'filter' => 'confirm']);
 
     //user Adverts   
     $routes->group('adverts', ['namespace' => 'App\Controllers\Dashboard', 'filter' => 'subscription'], function ($routes) {
