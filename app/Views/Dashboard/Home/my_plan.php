@@ -46,22 +46,17 @@
                                 </div>
                             </div>
 
-
                         <?php else : ?>
 
-
                             <div class="col-md-12">
-
 
                                 <?php if (!$subscription->is_paid) : ?>
 
                                     <div class="alert alert-warning">
                                         <h4 class="alert-heading">Importante!</h4>
-                                        <p>Assim que identificarmos o pagamento do seu plano você poderá desfrutar de todos os recursos que ele
-                                            oferece.</p>
+                                        <p>Assim que identificarmos o pagamento do seu plano você poderá desfrutar de todos os recursos que ele oferece.</p>
                                         <hr>
                                         <p class="mb-0">
-
                                             <?php echo anchor(route_to('detail.charge', $subscription->charge_not_paid), 'Quero ver se foi paga', ['class' => 'btn btn-sm btn-primary btn-gn']); ?>
 
                                         </p>

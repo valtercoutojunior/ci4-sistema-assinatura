@@ -95,4 +95,14 @@ class DashboardController extends BaseController
         $this->gerencianetService->cancelSubscription();
         return redirect()->route('dashboard')->with('success', "Sua assinatura foi cancelada com sucesso!");
     }
+
+    public function detailCharge(int $chargeID = null)
+    {
+        if (is_null($chargeID)) {
+            return redirect()->back()->with('danger', "Não foi possível buscar os detalhes da assinatura");
+        }
+
+        $charge =  $this->gerencianetService->detailCharge($chargeID);
+        return redirect()->back()->with('charge', $charge);
+    }
 }

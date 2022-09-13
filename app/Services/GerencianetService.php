@@ -9,6 +9,7 @@ use CodeIgniter\Config\Factories;
 use App\Services\SubscriptionService;
 use Gerencianet\Exception\GerencianetException;
 use phpDocumentor\Reflection\Types\This;
+use stdClass;
 
 class GerencianetService
 {
@@ -293,10 +294,27 @@ class GerencianetService
         }
     }
 
-
     public function userHasSubscription(): bool
     {
         return $this->subscriptionService->userHasSubscription();
+    }
+
+    public function detailCharge(int $chargeID = null)
+    {
+        $params = ['id' => $chargeID];
+
+        try {
+            $api = new Gerencianet($this->options);
+            $response = $api->detailCharge($params, []);
+            //echo '<pre>' . json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</pre>';
+            return  $this->preparesChargeForView($response['data']);
+        } catch (GerencianetException $e) {
+            log_message('error', '[ERROR] {exception}', ['exception' => $e->errorDescription]);
+            die('Erro ao tentar detalhar a assinatura na Gerencianet');
+        } catch (\Exception $e) {
+            log_message('error', '[ERROR] {exception}', ['exception' => $e]);
+            die('Erro ao tentar detalhar a assinatura');
+        }
     }
 
     private function defineSubscriptionSituation(array $details): bool
@@ -346,5 +364,22 @@ class GerencianetService
             'choice',
         ];
         session()->remove($data);
+    }
+
+    private function preparesChargeForView(array $chargeData): object
+    {
+        $chargeData = esc($chargeData);
+        $charge = new stdClass;
+
+        $charge->charge_id          = $chargeData['charge_id'];
+        $charge->payment_method     = $chargeData['payment']['method'];
+        $charge->status             = $chargeData['status'];
+        if (isset($chargeData['payment']['banking_billet'])) {
+            $charge->url_pdf = $chargeData['payment']['banking_billet']['pdf']['charge'];
+            $charge->expire_at     = date('d-m-Y', strtotime($chargeData['payment']['banking_billet']['expire_at']));
+        }
+        $charge->created_at         = date('d-m-Y', strtotime($chargeData['payment']['created_at']));
+        $charge->history            = $chargeData['history'];
+        return $charge;
     }
 }
