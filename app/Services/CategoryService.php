@@ -199,4 +199,15 @@ class CategoryService
             die('Error on delete data on service');
         }
     }
+
+    public function getCategoryBySlug(string $categorySlug, bool $withDeleted = false)
+    {
+        $category = $this->categoryModel->withDeleted($withDeleted)->where('slug', $categorySlug)->first();
+
+        if (is_null($category)) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('category not find');
+        }
+
+        return $category;
+    }
 }

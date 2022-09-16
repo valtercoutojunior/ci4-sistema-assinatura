@@ -57,7 +57,7 @@ return [
     'title' => [
         'required'      => 'Informe um título',
         'min_length'    => 'O título deve ter no minímo 3 caractéres',
-        'max_length'    => 'O título deve ter no máximo 20 caractéres',
+        'max_length'    => 'O título deve ter no máximo 125 caractéres',
         'is_unique'     => 'Esse Título já existe. Por favor escolha outro',
     ],
     'situation' => [

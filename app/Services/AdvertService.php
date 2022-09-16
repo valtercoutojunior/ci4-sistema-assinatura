@@ -338,6 +338,25 @@ class AdvertService
         }
     }
 
+    public function getAllAdvertsPaginated(int $perPage = 10, array $criteria = []): array
+    {
+        return [
+            'adverts'   => $this->advertModel->getAllAdvertsPaginated($perPage, $criteria),
+            'pager'     => $this->advertModel->pager
+        ];
+    }
+
+    public function getAdvertByCode(string $code, bool $ofTheLoggedInUser = false)
+    {
+        $advert = $this->advertModel->getAdvertByCode($code, $ofTheLoggedInUser);
+
+        if (is_null($advert)) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Advert not found');
+        }
+
+        return $advert;
+    }
+
     private function fireAdvertsEvents(Advert $advert, bool $notifyUserPublished)
     {
         $advert->email = !empty($advert->email) ? $advert->email : $this->user->email;

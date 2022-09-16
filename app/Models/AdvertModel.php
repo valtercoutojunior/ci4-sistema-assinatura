@@ -254,4 +254,69 @@ class AdvertModel extends MyBaseModel
             die('Error deleting data model');
         }
     }
+
+    public function getAllAdvertsPaginated(int $perPage = 10, array $criteria = [])
+    {
+        $this->setSQLMode();
+        $builder = $this;
+
+        $tableFields = [
+            'adverts.*',
+            'categories.name AS category',
+            'categories.slug AS category_slug',
+            'adverts_images.image AS images', //Será usado no metodo imagemno entoty advert
+        ];
+
+        $builder->select($tableFields);
+        $builder->join('categories', 'categories.id = adverts.category_id');
+        $builder->join('adverts_images', 'adverts_images.advert_id = adverts.id');
+        if (!empty($criteria)) {
+            $builder->where($criteria);
+        }
+        $builder->where('adverts.is_published', true);
+        $builder->orderBy('adverts.id', 'DESC');
+        $builder->groupBy('adverts.id');
+        $adverts = $builder->paginate($perPage);
+        return $adverts;
+    }
+
+
+    public function getAdvertByCode(string $code, bool $ofTheLoggedInUser = false)
+    {
+        $builder = $this;
+        $tableFields = [
+            'adverts.*',
+            'users.name',
+            'users.email', //usaremos para a parte dep perguntas e respostas
+            'users.username',
+            'users.phone',
+            'users.display_phone',
+            'users.created_at AS user_since',
+            'categories.name AS category',
+            'categories.slug AS category_slug', //usaremos para filtrar os anuncos por categorias
+        ];
+
+        $builder->select($tableFields);
+        $builder->join('users', 'users.id = adverts.user_id');
+        $builder->join('categories', 'categories.id = adverts.category_id');
+        $builder->where('adverts.is_published', true);
+        $builder->where('adverts.code', $code);
+
+        //Verifica se quem está visualizando o anuncio é o dono do anuncio
+        if ($ofTheLoggedInUser) {
+            $builder->where('adverts.user_id', $this->user->id);
+        }
+        $advert = $builder->first();
+
+        //Busca as imagens do anuncio encontrado
+        if (!is_null($advert)) {
+            $advert->images = $this->getAdvertImages($advert->id);
+        }
+
+        //Busca as perguntas e respostas do anuncio selecionado
+        if (!is_null($advert)) {
+        }
+
+        return $advert;
+    }
 }

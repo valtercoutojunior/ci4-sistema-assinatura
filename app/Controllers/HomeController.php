@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Requests\GerencianetRequest;
+use App\Services\AdvertService;
+use App\Services\CategoryService;
 use App\Services\GerencianetService;
 use App\Services\PlanService;
 use App\Services\UserService;
@@ -14,6 +16,7 @@ class HomeController extends BaseController
     private $userService;
     private $gerencianetRequest;
     private $gerencianetService;
+    private $advertService;
 
     public function __construct()
     {
@@ -21,13 +24,19 @@ class HomeController extends BaseController
         $this->userService          = Factories::class(UserService::class);
         $this->gerencianetRequest   = Factories::class(GerencianetRequest::class);
         $this->gerencianetService   = Factories::class(GerencianetService::class);
+        $this->advertService        = Factories::class(AdvertService::class);
     }
 
     public function index()
     {
+        $advertsForHome = (object) $this->advertService->getAllAdvertsPaginated(perPage: 20);
+
         $data = [
-            'title' => 'Home do Sistema de Anúncios',
+            'title'     => 'Home do Sistema de Anúncios',
+            'adverts'   => $advertsForHome->adverts,
+            'pager'     => $advertsForHome->pager,
         ];
+
         return view('Web/Home/index', $data);
     }
 
@@ -80,5 +89,54 @@ class HomeController extends BaseController
         $this->gerencianetService->createSubscription($plan, $request);
         session()->setFlashdata('success', 'Muito obrigado!! Agora estamos aguardando a confirmação do pagamento do sua assinatura');
         return $this->response->setJSON($this->gerencianetRequest->respondWithMessage('Muito obrigado!! Agora estamos aguardando a confirmação do pagamento do sua assinatura'));
+    }
+
+    public function userAdverts(string $userName = null)
+    {
+        $user = $this->userService->getUserByCriteria(['username' => $userName]);
+        $adverts = (object) $this->advertService->getAllAdvertsPaginated(perPage: 10, criteria: ['adverts.user_id' => $user->id]);
+        $userName = $user->name ?? $user->name;
+        $data = [
+            'title'     => "Anúncios do usuário {$userName}",
+            'adverts'   => $adverts->adverts,
+            'pager'     => $adverts->pager,
+        ];
+        return view('Web/Home/adverts_by_username', $data);
+    }
+
+    public function category(string $categorySlug = null)
+    {
+        $category = Factories::class(CategoryService::class)->getCategoryBySlug($categorySlug);
+        $adverts = (object) $this->advertService->getAllAdvertsPaginated(perPage: 10, criteria: ['categories.slug' => $category->slug]);
+
+        $data = [
+            'title'     => "Resultado para a Categoria \"{$category->name}\"",
+            'adverts'   => $adverts->adverts,
+            'pager'     => $adverts->pager,
+            'category'  => $category,
+        ];
+        return view('Web/Home/adverts_by_category', $data);
+    }
+
+    public function categoryCity(string $categorySlug = null, string $citySlug = null)
+    {
+        //Verificamos se existe a categoria
+        $category = Factories::class(CategoryService::class)->getCategoryBySlug($categorySlug);
+
+        $criteria = [
+            'categories.slug'       => $category->slug,
+            'adverts.city_slug'     => $citySlug
+        ];
+
+        $adverts = (object) $this->advertService->getAllAdvertsPaginated(perPage: 10, criteria: $criteria);
+        $city = array_column($adverts->adverts, 'city')[0];
+
+        $data = [
+            'title'     => "\"{$category->name}\" em \"{$city}\"",
+            'adverts'   => $adverts->adverts,
+            'pager'     => $adverts->pager,
+            'category'  => $category,
+        ];
+        return view('Web/Home/adverts_by_category_city', $data);
     }
 }

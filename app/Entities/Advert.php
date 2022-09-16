@@ -68,6 +68,23 @@ class Advert extends Entity
         }
     }
 
+    public function price()
+    {
+        return number_to_currency($this->attributes['price'], 'BRL', 'pt-BR', 2);
+    }
+
+    public function situation()
+    {
+        return $this->attributes['situation'] === 'new' ? '<span class="badge badge-pill badge-success px-4 py-2">Novo</span>' : '<span class="badge badge-pill badge-secondary px-4 py-2">Usado</span>';
+    }
+
+
+    public function displayPhone(): bool
+    {
+        return $this->attributes['display_phone'];
+    }
+
+
     private function handleWithEmptyImage(string $classImage): string
     {
         if (url_is('api/adverts*')) {

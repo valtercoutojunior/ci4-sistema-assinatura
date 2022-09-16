@@ -62,6 +62,15 @@ $routes->get('pricing', 'HomeController::pricing', ['as' => 'pricing']);
 $routes->get('choice/(:num)', 'HomeController::choice/$1', ['as' => 'choice', 'filter' => 'auth_verified']);
 $routes->post('pay/(:num)', 'HomeController::attemptPay/$1', ['as' => 'pay']);
 
+//Detalhes de um anuncio
+$routes->get('detail/(:any)', 'DetailsController::details/$1', ['as' => 'adverts.detail']);
+//Carregar mais anuncios de um usuário
+$routes->get('user/(:any)', 'HomeController::userAdverts/$1', ['as' => 'adverts.user']);
+//Busac anuncios por categoria
+$routes->get('category/(:any)', 'HomeController::category/$1', ['as' => 'adverts.category']);
+//Busac anuncios por cidade(Aqui ele recebe 2 parametros na url)
+$routes->get('category-city/(:any)/(:any)', 'HomeController::categoryCity/$1/$2', ['as' => 'adverts.category.city']);
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

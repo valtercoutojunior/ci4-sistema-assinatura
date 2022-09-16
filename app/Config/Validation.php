@@ -95,7 +95,7 @@ class Validation extends BaseConfig
     // Adverts
     //--------------------------------------------------------------------  
     public $advert = [
-        'title'         => 'required|min_length[3]|max_length[120]|is_unique[adverts.title,id,{id}]',
+        'title'         => 'required|min_length[3]|max_length[125]|is_unique[adverts.title,id,{id}]',
         'situation'     => 'required|in_list[new,used]',
         'category_id'   => 'required|is_not_unique[categories.id,id,{category_id}]',
         'price'         => 'required',

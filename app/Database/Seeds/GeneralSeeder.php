@@ -11,5 +11,7 @@ class GeneralSeeder extends Seeder
         $this->call(SuperadminSeeder::class);
         $this->call(PlanSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(CategorySeeder::class);
+        $this->call(AdvertSeeder::class);
     }
 }
