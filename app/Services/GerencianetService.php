@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Exception;
 use App\Entities\Plan;
+use App\Models\AdvertModel;
 use Gerencianet\Gerencianet;
 use CodeIgniter\Config\Factories;
 use App\Services\SubscriptionService;
@@ -316,6 +317,46 @@ class GerencianetService
             die('Erro ao tentar detalhar a assinatura');
         }
     }
+
+    public function userReachedAdvertsLimit(): bool
+    {
+        //verifica se o usuario logado tem assinatura válida
+        if (!$this->userHasSubscription()) {
+            return true;
+        }
+
+        //Busca os dados da assinatura quando o usuario tem uma
+        $this->getUserSubscription();
+        //Verifica se o tipo de assinatura é com cadastro de anuncios ilimitados
+        if (is_null($countFeaturesAdverts = $this->userSubscription->features->adverts)) {
+            return false;
+        }
+
+        //Contamos a quantidade de anuncios que o usuario logado tem
+        $countUserAdverts = $this->countAllUserAdverts();
+
+        //Verifica se a quantidade de anuncios que o usuario tem é maior ou igual a que ele contratou no momento da compra do plano
+        if ($countUserAdverts >= $countFeaturesAdverts) {
+            return true;
+        }
+        //O usuário ainda não atingiu a quantidade de anuncios que o plano dele permite. Pode continuar cadastrando
+        return false;
+    }
+
+
+
+    public function countAllUserAdverts(bool $withDeleted = true, array $criteria = []): int
+    {
+        if (!$this->userHasSubscription()) {
+            return 0;
+        }
+        return Factories::models(AdvertModel::class)->countAllUserAdverts($this->user->id, $withDeleted, $criteria);
+    }
+
+
+    /**::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+     * ::::::::::::::::: METODOS PRIVADOS :::::::::::::::::::::::::::::::::::::
+     ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
 
     private function defineSubscriptionSituation(array $details): bool
     {

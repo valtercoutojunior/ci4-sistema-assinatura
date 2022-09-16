@@ -29,6 +29,8 @@ class HomeController extends BaseController
 
     public function index()
     {
+        //d(categories_adverts());
+        //dd(cities_adverts(categorySlug: 'monitores-e-acessorios'));
         $advertsForHome = (object) $this->advertService->getAllAdvertsPaginated(perPage: 20);
 
         $data = [

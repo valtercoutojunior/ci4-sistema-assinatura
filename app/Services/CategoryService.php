@@ -210,4 +210,9 @@ class CategoryService
 
         return $category;
     }
+
+    public function getCategoriesFromPublishedAdverts(int $limit = 5): array
+    {
+        return $this->categoryModel->getCategoriesFromPublishedAdverts($limit);
+    }
 }

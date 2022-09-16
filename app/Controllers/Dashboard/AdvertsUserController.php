@@ -8,6 +8,7 @@ use App\Services\AdvertService;
 use App\Services\CategoryService;
 use CodeIgniter\Config\Factories;
 use App\Controllers\BaseController;
+use App\Services\GerencianetService;
 
 class AdvertsUserController extends BaseController
 {

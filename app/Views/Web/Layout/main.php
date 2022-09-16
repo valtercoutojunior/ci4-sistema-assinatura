@@ -69,21 +69,14 @@
                         <div class="short-popular-category-list text-center">
                             <h2>Popular Category</h2>
                             <ul class="list-inline">
-                                <li class="list-inline-item">
-                                    <a href=""><i class="fa fa-bed"></i> Hotel</a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href=""><i class="fa fa-grav"></i> Fitness</a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href=""><i class="fa fa-car"></i> Cars</a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href=""><i class="fa fa-cutlery"></i> Restaurants</a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href=""><i class="fa fa-coffee"></i> Cafe</a>
-                                </li>
+
+                                <?php foreach (categories_adverts(10) as $category) : ?>
+                                    <li class="list-inline-item mb-3">
+                                        <a href="<?= route_to('adverts.category', $category->slug); ?>">
+                                            <?= $category->name; ?>
+                                        </a>
+                                    </li>
+                                <?php endforeach; ?>
                             </ul>
                         </div>
 
@@ -217,16 +210,6 @@
     <!-- JAVASCRIPTS -->
 
     <script src="<?= site_url('web/plugins/jquery/jquery.min.js'); ?>"></script>
-    <!--
-    <script src="<?php //echo site_url('web/plugins/jquery-ui/jquery-ui.min.js'); 
-                    ?>"></script>
-    <script src="<?php //echo site_url('web/plugins/tether/js/tether.min.js'); 
-                    ?>"></script>
-    <script src="<?php //echo site_url('web/plugins/raty/jquery.raty-fa.js'); 
-                    ?>"></script>
-    <script src="<?php //echo site_url('web/plugins/jquery-nice-select/js/jquery.nice-select.min.js'); 
-                    ?>"></script>
-    -->
 
     <script src="<?= site_url('web/plugins/bootstrap/dist/js/popper.min.js'); ?>"></script>
     <script src="<?= site_url('web/plugins/bootstrap/dist/js/bootstrap.min.js'); ?>"></script>

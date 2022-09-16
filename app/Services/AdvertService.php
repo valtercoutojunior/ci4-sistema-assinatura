@@ -357,6 +357,12 @@ class AdvertService
         return $advert;
     }
 
+    public function getCitiesFromPublishedAdverts(int $limit = 5, string $categorySlug = null): array
+    {
+        return $this->advertModel->getCitiesFromPublishedAdverts($limit, $categorySlug);
+    }
+
+
     private function fireAdvertsEvents(Advert $advert, bool $notifyUserPublished)
     {
         $advert->email = !empty($advert->email) ? $advert->email : $this->user->email;

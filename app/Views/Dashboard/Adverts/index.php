@@ -24,16 +24,46 @@
 					<h3 class="widget-header"><?= lang('Adverts.title_index'); ?></h3>
 
 					<div class="row">
-						<div class="col-12 col-sm-6 col-md-6 mb-3">
-							<a href="<?= route_to('my.archived.adverts'); ?>" class="btn btn-main-sm">
-								<?= lang('App.btn_all_archive'); ?>
-							</a>
-						</div>
-						<div class="col-12 col-sm-6 col-md-6 text-md-right mb-3">
-							<button type="button" id="btnCreateAdvert" class="btn btn-main-sm add-button">
-								<?= lang('App.btn_new'); ?>
-							</button>
-						</div>
+
+						<?php if (user_reached_adverts_limit()) : ?>
+							<div class="col-12 mb-3">
+								<div class="alert alert-info bg-info" role="alert">
+									<h4 class="alert-heading text-center text-light">AVISO IMPORTANTE!</h4>
+									<p class="text-light">Você já cadastrou <strong><?= count_all_user_adverts(); ?></strong> anúncios! Para continuar cadastrando novos anúncios você deve mudar de plano. É rápido e fácil... </p>
+									<hr>
+									<p class="mb-0 text-center">
+										<a href="<?= route_to('pricing'); ?>" class="btn btn-light btn-sm btn-block">
+											Quero mudar de plano agora
+										</a>
+									</p>
+								</div>
+							</div>
+
+							<div class="col-12 col-sm-6 col-md-6 mb-3">
+								<a href="<?= route_to('my.archived.adverts'); ?>" class="btn btn-main-sm">
+									<?= lang('App.btn_all_archive'); ?>
+								</a>
+							</div>
+
+
+						<?php else : ?>
+
+							<div class="col-12 col-sm-6 col-md-6 mb-3">
+								<a href="<?= route_to('my.archived.adverts'); ?>" class="btn btn-main-sm">
+									<?= lang('App.btn_all_archive'); ?>
+								</a>
+							</div>
+
+
+							<div class="col-12 col-sm-6 col-md-6 text-md-right mb-3">
+								<button type="button" id="btnCreateAdvert" class="btn btn-main-sm add-button">
+									<?= lang('App.btn_new'); ?>
+								</button>
+							</div>
+
+
+
+						<?php endif; ?>
 					</div>
 
 					<div class="row">

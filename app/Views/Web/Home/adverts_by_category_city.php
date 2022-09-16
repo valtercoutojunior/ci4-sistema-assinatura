@@ -26,11 +26,7 @@
         </div>
         <div class="row">
             <div class="col-md-3">
-                <h1 class="text-danger">COLOCAREMOS A SIDEBAR AQUI</h1>
-
-                <?php //echo $this->include('Web/Home/_sidebar_filters'); 
-                ?>
-
+                <?php echo $this->include('Web/Home/_sidebar_filters'); ?>
             </div>
 
             <div class="col-md-9">

@@ -24,7 +24,7 @@ $routes->group('{locale}/dashboard', ['namespace' => 'App\Controllers\Dashboard'
         $routes->get('get-categories-situations', 'AdvertsUserController::getCategoriesAndSituations', ['as' => 'get.categories.situations']);
         $routes->get('edit-images/(:num)', 'AdvertsUserController::editUserAdvertImages/$1', ['as' => 'adverts.my.edit.images']);
         $routes->post('create', 'AdvertsUserController::createUserAdvert', ['as' => 'adverts.create.my']);
-        $routes->put('update', 'AdvertsUserController::updateUserAdvert', ['as' => 'adverts.update.my']);
+        $routes->put('update', 'AdvertsUserController::updateUserAdvert', ['as' => 'adverts.update.my', 'filter' => 'adverts']);
         $routes->put('upload/(:num)', 'AdvertsUserController::uploadAdvertImages/$1', ['as' => 'adverts.upload.my']);
         $routes->delete('delete-image/(:any)', 'AdvertsUserController::deleteUserAdvertImage/$1', ['as' => 'adverts.delete.image']);
         $routes->put('archive', 'AdvertsUserController::archiveUserAdvert', ['as' => 'adverts.archive.my']);

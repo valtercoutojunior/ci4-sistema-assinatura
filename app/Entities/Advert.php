@@ -84,6 +84,10 @@ class Advert extends Entity
         return $this->attributes['display_phone'];
     }
 
+    public function city()
+    {
+        return "{$this->attributes['city']} - {$this->attributes['state']}";
+    }
 
     private function handleWithEmptyImage(string $classImage): string
     {

@@ -319,4 +319,37 @@ class AdvertModel extends MyBaseModel
 
         return $advert;
     }
+
+    public function getCitiesFromPublishedAdverts(int $limit = 5, string $categorySlug = null): array
+    {
+        $this->setSQLMode();
+        $tableFields = [
+            'adverts.*',
+            'categories.name AS category', //Para debug
+            'COUNT(adverts.id) AS total_adverts'
+        ];
+
+        $advertsIDS = array_column($this->db->table('adverts_images')->select('advert_id')->get()->getResultArray(), 'advert_id');
+        $builder = $this;
+        $builder->select($tableFields);
+        $builder->join('categories', 'categories.id = adverts.category_id');
+        $builder->where('adverts.is_published', true);
+        $builder->where('categories.slug', $categorySlug);
+        $builder->whereIn('adverts.id', $advertsIDS); //Apenas anuncios que possuem imagens
+        $builder->groupBy('adverts.city');
+        $builder->orderBy('total_adverts', 'DESC');
+        return $builder->findAll($limit);
+    }
+
+    public function countAllUserAdverts(int $userID, bool $withDeleted = true, array $criteria = []): int
+    {
+        $builder = $this;
+
+        if (!empty($criteria)) {
+            $builder->where($criteria);
+        }
+        $builder->where('adverts.user_id', $userID);
+        $builder->withDeleted($withDeleted);
+        return $builder->countAllResults();
+    }
 }

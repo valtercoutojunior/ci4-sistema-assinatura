@@ -14,6 +14,9 @@ use CodeIgniter\Filters\SecureHeaders;
 use App\Filters\HasSubscriptionFilter; //Filtro de incrição
 use App\Filters\PaymentFilter; //Filtro de pagamento
 
+use App\Filters\AdvertFilter;
+
+
 class Filters extends BaseConfig
 {
     /**
@@ -56,6 +59,11 @@ class Filters extends BaseConfig
             AuthFilter::class,
             HasSubscriptionFilter::class,
             PaymentFilter::class,
+        ],
+
+        'adverts' => [
+            AuthFilter::class, //Verifica se o usuario está logado
+            AdvertFilter::class,
         ],
     ];
 
