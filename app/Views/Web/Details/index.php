@@ -140,25 +140,18 @@
                                         <input type="text" style="height: 54.5px" name="ask" value="<?php echo session('ask') ?? old('ask'); ?>" required class="form-control mb-2" id="inlineFormInput" placeholder="Escreva sua pergunta...">
                                     </div>
 
-
                                     <div class="col-4">
                                         <input type="submit" style="cursor: pointer;" value="Perguntar" class="btn btn-primary btn-block mb-2" />
                                     </div>
-
                                 </div>
 
                                 <?php echo form_close(); ?>
 
-
                                 <h4 class="tab-title mt-4">Últimas perguntas realizadas</h4>
 
                                 <?php if (!empty($advert->questions)) : ?>
-
-
                                     <ul class="list-inline mt-20">
-
                                         <?php foreach ($advert->questions as $question) : ?>
-
                                             <p>
                                                 <li class="list-inline-item">
                                                     <?php echo $question->question; ?><small> <?php echo date('d/m/Y', strtotime($question->created_at)); ?></small>
@@ -245,34 +238,20 @@
 
 <script>
     $("#form-ask").submit(function() {
-
         $(this).find(":submit").val('Por favor aguarde...').attr('disabled', 'disabled');
-
     });
 </script>
 
-
 <?php if (session('info_ask')) : ?>
-
-
     <script>
         toastr.info('<?php echo session('info_ask'); ?>');
     </script>
-
-
 <?php endif; ?>
 
-
 <?php if (session('success_ask')) : ?>
-
-
     <script>
         toastr.success('<?php echo session('success_ask'); ?>');
     </script>
-
-
 <?php endif; ?>
-
-
 
 <?= $this->endSection() ?>

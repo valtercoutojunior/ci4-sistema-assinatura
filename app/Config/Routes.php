@@ -70,7 +70,8 @@ $routes->get('user/(:any)', 'HomeController::userAdverts/$1', ['as' => 'adverts.
 $routes->get('category/(:any)', 'HomeController::category/$1', ['as' => 'adverts.category']);
 //Busac anuncios por cidade(Aqui ele recebe 2 parametros na url)
 $routes->get('category-city/(:any)/(:any)', 'HomeController::categoryCity/$1/$2', ['as' => 'adverts.category.city']);
-
+//Perguntas e respostas
+$routes->post('toask/(:any)', 'DetailsController::toask/$1', ['as' => 'details.toask', 'filter' => 'auth']); //A responsta vai ser feita pelo dashboard
 /*
  * --------------------------------------------------------------------
  * Additional Routing
