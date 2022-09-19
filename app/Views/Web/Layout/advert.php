@@ -28,16 +28,15 @@
     <link href="<?php echo site_url('web/'); ?>plugins/jquery-nice-select/css/nice-select.css" rel="stylesheet">
     <link href="<?php echo site_url('web/'); ?>plugins/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" rel="stylesheet">
 
-
     <!-- Para o autocomplete -->
     <link rel="stylesheet" href="<?php echo site_url('web/plugins/auto-complete/jquery-ui.css'); ?>" />
 
 
     <!-- CUSTOM CSS -->
-    <link href="<?php echo site_url('web/'); ?>css/style.css" rel="stylesheet">
+    <link href="<?= site_url('web/'); ?>css/style.css" rel="stylesheet">
 
     <!-- FAVICON -->
-    <link href="<?php echo site_url('web/'); ?>img/favicon.png" rel="shortcut icon">
+    <link href="<?= site_url('web/'); ?>img/favicon.png" rel="shortcut icon">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -304,8 +303,7 @@
     <script src="<?php echo site_url('web/'); ?>plugins/smoothscroll/SmoothScroll.min.js"></script>
 
 
-    <?php //echo $this->include('Web/Layout/Scripts/_autocomplete'); 
-    ?>
+    <?php echo $this->include('Web/Layout/Scripts/_autocomplete'); ?>
 
 
     <script src="<?php echo site_url('web/'); ?>js/scripts.js"></script>

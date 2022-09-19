@@ -30,7 +30,14 @@
     <!-- Template Main CSS File -->
     <link href="<?= site_url('manager_assets/assets/css/style.css'); ?>" rel="stylesheet">
 
+
     <?= $this->renderSection('styles'); ?>
+
+    <style>
+        .img-custom {
+            max-width: 50% !important;
+        }
+    </style>
 
     <!-- =======================================================
   * Template Name: NiceAdmin - v2.3.1

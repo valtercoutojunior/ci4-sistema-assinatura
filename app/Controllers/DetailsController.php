@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Services\AdvertService;
 use App\Services\ImageService;
+use CodeIgniter\Commands\Server\Serve;
 use CodeIgniter\Config\Factories;
 
 class DetailsController extends BaseController
@@ -39,5 +40,20 @@ class DetailsController extends BaseController
     public function image(string $image = null, string $sizeImage = 'regular')
     {
         ImageService::showImage('adverts', $image, $sizeImage);
+    }
+
+    public function toask(string $code = null)
+    {
+        //Pega os dados do anuncio
+        $advert = $this->advertService->getAdvertByCode($code);
+
+        //Verifica se a pessoa que está fazendo a perguntaé a sona do anuncio
+        if ($advert->user_id == service('auth')->user()->id) {
+            return redirect()->back()->with('info_ask', "Esse anúncio pertence a você! Sua pergunta será ignorada");
+        }
+
+        $this->advertService->tryInsertAdvertQuestion($advert, $this->request->getPost('ask'));
+
+        return redirect()->back()->with('success_ask', "Sua pergunta foi enviada com sucesso!");
     }
 }

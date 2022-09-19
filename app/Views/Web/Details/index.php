@@ -190,8 +190,14 @@
                     </div>
                     <!-- User Profile widget -->
                     <div class="widget user">
-                        <h4><a href="<?php echo route_to('adverts.user', $advert->username); ?>"><?php echo $advert->name ?? $advert->username; ?></a></h4>
-                        <p class="member-time">Desde <?php echo $advert->user_since->humanize(); ?></p>
+                        <h4>
+                            <a href="<?php echo route_to('adverts.user', $advert->username); ?>">
+                                <?php echo $advert->name ?? $advert->username; ?>
+                            </a>
+                        </h4>
+                        <p class="member-time">
+                            Desde <?php echo $advert->user_since->humanize(); ?>
+                        </p>
 
                         <ul class="list-inline mt-20">
 
@@ -204,7 +210,7 @@
                             <?php endif; ?>
 
                             <li class="list-inline-item">
-                                <a href="<?php echo route_to('adverts.user', $advert->username); ?>" class="btn btn-outline-primary btn-offer pb-0">
+                                <a href="<?php echo route_to('adverts.user', $advert->username); ?>" class="btn btn-outline-primary btn-offer pb-0 btn-block">
                                     Anúncios de
                                     <p style="word-break: break-all !important;">
                                         <?php echo $advert->name ?? $advert->username; ?>

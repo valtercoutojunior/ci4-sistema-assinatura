@@ -26,7 +26,16 @@
         </li>
         <!-- End Categories Nav -->
 
+        <!-- Adverts Nav -->
         <li class="nav-item">
+            <a class="nav-link <?= (url_is('adverts.manager') ? 'collapsed' : ''); ?>" href="<?= route_to('adverts.manager'); ?>">
+                <i class="bi bi-stack"></i>
+                <span><?= lang('App.sidebar.manager.adverts'); ?></span>
+            </a>
+        </li>
+        <!-- End Adverts Nav -->
+
+        <!-- <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
@@ -102,7 +111,14 @@
                     </a>
                 </li>
             </ul>
-        </li><!-- End Components Nav -->
+        </li>End Components Nav -->
+
+        <!-- <li class="nav-item">
+        <a class="nav-link collapsed" href="users-profile.html">
+          <i class="bi bi-person"></i>
+          <span>Profile</span>
+        </a>
+      </li>End Profile Page Nav -->
     </ul>
 
 </aside>

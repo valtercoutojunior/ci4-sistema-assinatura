@@ -92,6 +92,13 @@ class AuthenticatedSessionController extends BaseController
             return redirect()->to(session('choice'));
         }
 
+        //Verifica se estava sendo feito uma pergunta
+        if (session()->has('details')) {
+            $redirectTo = session('details');
+            session()->remove('details');
+            return redirect()->to($redirectTo);
+        }
+
         // Finnaly we're success login.
         return redirect(config('Auth')->home)
             ->with('success', lang('App.messages.welcome', ['name' => Auth::user()->name ?? Auth::user()->username]))

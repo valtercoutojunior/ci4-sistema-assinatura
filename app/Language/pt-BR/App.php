@@ -12,6 +12,7 @@ return [
             'home'          => 'Home',
             'categories'    => 'Categorias',
             'plans'         => 'Planos de Assinaturas',
+            'adverts'       => 'Anúncios',
         ],
         'dashboard' => [
             'dashboard'         => 'Principal',
@@ -47,4 +48,7 @@ return [
     'info_delete_confirmation'  => 'Essa ação não poderá ser revertida',
     'info_empty_data'           => 'Não há dados para exibir',
     'success_image_advert'      => 'Imagen(s) enviada(s) com sucesso',
+
+    //Sistema
+    'logout'                    => 'Sair do sistema',
 ];

@@ -32,4 +32,29 @@ $routes->group('{locale}/manager', ['namespace' => 'App\Controllers\Manager', 'f
         $routes->put('recover', 'PlansController::recover', ['as' => 'plans.recover']);
         $routes->delete('delete', 'PlansController::delete', ['as' => 'plans.delete']);
     });
+
+    //Adverts
+    $routes->group('adverts', function ($routes) {
+        $routes->get('/', 'AdvertsManagerController::index', ['as' => 'adverts.manager']);
+        $routes->get('get-all-manager-adverts', 'AdvertsManagerController::getAllAdverts', ['as' => 'get.all.manager.adverts']);
+        $routes->get('get-manager-advert', 'AdvertsManagerController::getManagerAdvert', ['as' => 'get.manager.advert']);
+        $routes->put('update-manager-advert', 'AdvertsManagerController::updateManagerAdvert', ['as' => 'adverts.manager.update']);
+        $routes->put('archive-manager-advert', 'AdvertsManagerController::archiveManagerAdvert', ['as' => 'adverts.manager.archive']);
+        $routes->get('archived', 'AdvertsManagerController::archived', ['as' => 'adverts.manager.archived']);
+        $routes->get('get-archived-manager-adverts', 'AdvertsManagerController::getManagerArchivedAdverts', ['as' => 'get.archived.manager.adverts']);
+
+        $routes->delete('delete', 'AdvertsManagerController::deleteManagerAdvert', ['as' => 'adverts.manager.delete']);
+        $routes->get('show-manager-images/(:num)', 'AdvertsManagerController::showManagerAdvertImages/$1', ['as' => 'adverts.manager.edit.images']);
+
+
+        // $routes->get('get-categories-situations', 'AdvertsUserController::getCategoriesAndSituations', ['as' => 'get.categories.situations']);
+        // $routes->get('edit-images/(:num)', 'AdvertsUserController::editUserAdvertImages/$1', ['as' => 'adverts.my.edit.images']);
+        // $routes->post('create', 'AdvertsUserController::createUserAdvert', ['as' => 'adverts.create.my']);
+        // $routes->put('update', 'AdvertsUserController::updateUserAdvert', ['as' => 'adverts.update.my', 'filter' => 'adverts']);
+        // $routes->put('upload/(:num)', 'AdvertsUserController::uploadAdvertImages/$1', ['as' => 'adverts.upload.my']);
+        // $routes->delete('delete-image/(:any)', 'AdvertsUserController::deleteUserAdvertImage/$1', ['as' => 'adverts.delete.image']);
+        // //Perguntas e respostas
+        // $routes->get('questions/(:any)', 'AdvertsUserController::userAdvertQuestions/$1', ['as' => 'adverts.my.edit.questions']);
+        // $routes->put('questions/(:num)', 'AdvertsUserController::userAdvertAnswerQuestions/$1', ['as' => 'adverts.my.answer.questions']);
+    });
 });

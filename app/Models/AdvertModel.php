@@ -105,6 +105,14 @@ class AdvertModel extends MyBaseModel
         return $data;
     }
 
+    public function unpublished(array $data): array
+    {
+        //Verifica se houve alteração no titulo ou na descrição
+        if (isset($data['data']['title']) || isset($data['data']['description'])) {
+            $data['data']['is_published'] = false;
+        }
+        return $data;
+    }
 
     /**
      * Recupera todos os anúncios de acordo com o usuário logado
@@ -131,8 +139,9 @@ class AdvertModel extends MyBaseModel
 
         $builder->select($tableFields);
 
-        //Verifica se o usuário que está logado é um superadmin
+        //Quem está logado é o manager(admin)
         if (!$this->user->isSuperadmin()) {
+            //É o usuario anunciante... buscará somente os anuncios dele
             $builder->where('adverts.user_id', $this->user->id);
         }
 
@@ -185,16 +194,8 @@ class AdvertModel extends MyBaseModel
             ->getResult();
     }
 
-    public function unpublished(array $data): array
-    {
-        //Verifica se houve alteração no titulo ou na descrição
-        if (isset($data['data']['title']) || isset($data['data']['description'])) {
-            $data['data']['is_published'] = false;
-        }
-        return $data;
-    }
 
-    public function trySaveAdvert(Advert $advert, bool $protect = false)
+    public function trySaveAdvert(Advert $advert, bool $protect = true)
     {
         try {
             $this->db->transStart();
@@ -232,7 +233,15 @@ class AdvertModel extends MyBaseModel
     {
         try {
             $this->db->transStart();
-            $this->where('user_id', $this->user->id)->delete($advertID);
+
+            //Verifica se a pessoa que esta logada é o manager
+            if (!$this->user->isSuperadmin()) {
+                //Se for o user. Permitimos ele arquivar somente anuncios dele mesmo
+                $this->where('user_id', $this->user->id)->delete($advertID);
+            } else {
+                //É o manager ele pode arquivar todos os anuncios
+                $this->delete($advertID);
+            }
             $this->db->transCommit();
         } catch (\Exception $e) {
             log_message('error', '[ERROR] {exception}', ['exception' => $e]);
@@ -247,6 +256,8 @@ class AdvertModel extends MyBaseModel
             //Verifica se é o manager
             if (!$this->user->isSuperadmin()) {
                 $this->where('user_id', $this->user->id)->delete($advertID, purge: true);
+            } else {
+                $this->delete($advertID, purge: true);
             }
             $this->db->transCommit();
         } catch (\Exception $e) {
@@ -315,6 +326,7 @@ class AdvertModel extends MyBaseModel
 
         //Busca as perguntas e respostas do anuncio selecionado
         if (!is_null($advert)) {
+            $advert->questions = $this->getAdvertQuestions($advert->id);
         }
 
         return $advert;
@@ -351,5 +363,61 @@ class AdvertModel extends MyBaseModel
         $builder->where('adverts.user_id', $userID);
         $builder->withDeleted($withDeleted);
         return $builder->countAllResults();
+    }
+
+
+    /**::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+     * :::::::::: PERGUNTAS E RESPOSTAS :::::::::::::::::::::::::::::::::::::::::
+     :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+
+
+    public function getAdvertQuestions(int $advertID): array
+    {
+        $builder = $this->db->table('adverts_questions');
+        $builder->where('advert_id', $advertID);
+        $builder->orderBy('id', 'DESC');
+        return $builder->get()->getResult();
+    }
+
+    public function insertAdvertQuestion(int $advertID, string $question)
+    {
+        try {
+            $this->db->transStart();
+
+            $data = [
+                'advert_id'         => $advertID,
+                'user_question_id'  => $this->user->id,
+                'question'          => esc($question),
+                'created_at'        => date('Y-m-d H:i:s'),
+            ];
+            $this->db->table('adverts_questions')->insert($data);
+            $this->db->transComplete();
+        } catch (\Exception $e) {
+            log_message('error', '[ERROR] {exception}', ['exception' => $e]);
+            die('Erro ao salvar pergunta');
+        }
+    }
+
+    public function answerAdvertQuestion(int $questionID, int $advertID, string $answer)
+    {
+        try {
+            $this->db->transStart();
+
+            $criteria = [
+                'id'        => $questionID,
+                'advert_id' => $advertID
+            ];
+
+            $data = [
+                'answer'       => esc($answer),
+                'updated_at'   => date('Y-m-d H:i:s'),
+            ];
+            $this->db->table('adverts_questions')->where($criteria)->update($data);
+
+            $this->db->transComplete();
+        } catch (\Exception $e) {
+            log_message('error', '[ERROR] {exception}', ['exception' => $e]);
+            die('Erro ao responder pergunta');
+        }
     }
 }

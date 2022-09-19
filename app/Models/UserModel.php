@@ -97,8 +97,8 @@ class UserModel extends Model implements UserProviderInterface
         }
     }
 
-    public function getUserByCriteria(array $criteria  = [])
+    public function getUserByCriteria(array $criteria = [])
     {
-        return $this->select('id', 'name', 'username', 'email')->where($criteria)->first();
+        return $this->select('id, name, username, email')->where($criteria)->first();
     }
 }

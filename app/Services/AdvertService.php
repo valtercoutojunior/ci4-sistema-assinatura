@@ -26,7 +26,7 @@ class AdvertService
         bool $showBtnArchive = true,
         bool $showBtnViewAdvert = true,
         bool $showBtnQuestions = true,
-        string $classBtnActions = 'btn btn-primary btn-sm',
+        string $classBtnActions = 'btn btn-primary btn-block',
         string $sizeImage = 'small',
     ): array {
 
@@ -79,7 +79,7 @@ class AdvertService
              abrindo em uma nova guia
             */
             if ($showBtnViewAdvert && $advert->is_published) {
-                $routeToViewAdvert = route_to('adverts.details', $advert->code);
+                $routeToViewAdvert = route_to('adverts.detail', $advert->code);
                 //Monta o btnViewAdverts
                 $btnViewAdvert = form_button(
                     [
@@ -114,7 +114,7 @@ class AdvertService
                 'class'             => "dropdown-toggle {$classBtnActions}",
                 'data-toggle'       => "dropdown", //Para BS4
                 'data-bs-toggle'    => "dropdown", //Para BS5
-                'aria-haspopup'     => "true",
+                // 'aria-haspopup'     => "true",
                 'aria-expanded'     => "false",
             ];
 
@@ -145,7 +145,7 @@ class AdvertService
             $btnActions .= '</div>'; //Fecha a div
 
             $data[] = [
-                'image'         => $advert->image(classImage: 'card-img-top', sizeImage: $sizeImage),
+                'image'         => $advert->image(classImage: 'img-fluid img-custom', sizeImage: $sizeImage),
                 'title'         => $advert->title,
                 'code'          => $advert->code,
                 'category'      => $advert->category,
@@ -163,7 +163,7 @@ class AdvertService
         bool $showBtnRecover = true,
         string $classBtnRecover = '',
         string $classBtnDelete = '',
-        string $classBtnActions = 'btn btn-primary btn-sm',
+        string $classBtnActions = 'btn btn-primary',
     ): array {
 
         $adverts = $this->advertModel->getAllAdverts(onlyDeleted: true);
@@ -200,8 +200,8 @@ class AdvertService
 
             //Propriedades do btn que vai ser mostrado
             $attrBtnActions = [
-                'type'              => 'button',
-                'id'                => 'actions',
+                'type'              => "button",
+                'id'                => "actions",
                 'class'             => "dropdown-toggle {$classBtnActions}",
                 'data-toggle'       => "dropdown", //Para BS4
                 'data-bs-toggle'    => "dropdown", //Para BS5
@@ -264,7 +264,7 @@ class AdvertService
         return form_dropdown('situation', $options, $selected, ['class' => 'form-control']);
     }
 
-    public function trySaveAdvert(Advert $advert, bool $protect = false, bool $notifyUserPublished = false)
+    public function trySaveAdvert(Advert $advert, bool $protect = true, bool $notifyUserPublished = false)
     {
         try {
             $advert->unsetAuxiliaryAttributes();
@@ -362,6 +362,28 @@ class AdvertService
         return $this->advertModel->getCitiesFromPublishedAdverts($limit, $categorySlug);
     }
 
+    public function tryInsertAdvertQuestion(Advert $advert, string $question)
+    {
+        try {
+            $this->advertModel->insertAdvertQuestion($advert->id, $question);
+            session()->remove('ask');
+            $this->fireAdvertHasNewQuestion($advert);
+        } catch (\Exception $e) {
+            log_message('error', '[ERROR] {exception}', ['exception' => $e]);
+            die('Error deleting data service');
+        }
+    }
+
+    public function tryAnswerAdvertQuestion(int $questionID, Advert $advert, object $request)
+    {
+        try {
+            $this->advertModel->answerAdvertQuestion(questionID: $questionID, advertID: $advert->id, answer: $request->answer);
+            $this->fireAdvertQuestionHasBeenAnswered($advert, $request->question_owner);
+        } catch (\Exception $e) {
+            log_message('error', '[ERROR] {exception}', ['exception' => $e]);
+            die('Error  responder');
+        }
+    }
 
     private function fireAdvertsEvents(Advert $advert, bool $notifyUserPublished)
     {
@@ -371,9 +393,9 @@ class AdvertService
             Events::trigger('notify_manager', "Existem anúncios para serem auditados");
         }
 
-        /**
-         * @todo notificar o usuário quando o anuncio for publicado
-         */
+        if ($notifyUserPublished) {
+            $this->fireAdvertPublished($advert);
+        }
     }
 
     private function fireAdvertsEventForNewImages(Advert $advert)
@@ -381,5 +403,23 @@ class AdvertService
         $advert->email = !empty($advert->email) ? $advert->email : $this->user->email;
         Events::trigger('notify_user_advert', $advert->email, "Estamos analisando as novas imagens do seu anúncio {$advert->code}, assim que finalizarmos a análise você será notificado via email");
         Events::trigger('notify_manager', "Existem imagens de anúncios para serem auditadas");
+    }
+
+    private function fireAdvertHasNewQuestion(Advert $advert)
+    {
+        Events::trigger('notify_user_advert', $advert->email, "Seu anúncio {$advert->title}, tem uma nova pergunta...");
+    }
+
+    private function fireAdvertQuestionHasBeenAnswered(Advert $advert, int $userQuestionID)
+    {
+        $userWhoAskedQuestion = Factories::class(UserService::class)->getUserByCriteria(['id' => $userQuestionID]);
+        Events::trigger('notify_user_advert', $userWhoAskedQuestion->email, "A pergunta que você fez para o anúncio {$advert->title}, foi respondida...");
+    }
+
+    private function fireAdvertPublished(Advert $advert)
+    {
+        if ($advert->weMustNotifyThePublication()) {
+            Events::trigger('notify_user_advert', $advert->email, "Seu anúncio {$advert->title}, foi publicado");
+        }
     }
 }

@@ -27,11 +27,13 @@
     <link href="<?= site_url('web/plugins/fancybox/jquery.fancybox.pack.css'); ?>" rel="stylesheet">
     <link href="<?= site_url('web/plugins/jquery-nice-select/css/nice-select.css'); ?>" rel="stylesheet">
     <link href="<?= site_url('web/plugins/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css'); ?>" rel="stylesheet">
-    <script src="<?= site_url('manager_assets/assets/vendor/toastr/toastr.min.js'); ?>"></script>
+    <link href="<?= site_url('web/plugins/toastr/toastr.min.css'); ?>" rel="stylesheet">
     <!-- CUSTOM CSS -->
     <link href="<?= site_url('web/css/style.css'); ?>" rel="stylesheet">
     <link href="<?= site_url('web/css/my_custom.css'); ?>" rel="stylesheet">
 
+    <!-- Para o autocomplete -->
+    <link rel="stylesheet" href="<?= site_url('web/plugins/auto-complete/jquery-ui.css'); ?>" />
 
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -79,44 +81,32 @@
                                 <?php endforeach; ?>
                             </ul>
                         </div>
-
                     </div>
                     <!-- Advance Search -->
                     <div class="advance-search">
                         <form action="#">
                             <div class="row">
                                 <!-- Store Search -->
-                                <div class="col-lg-6 col-md-12">
-                                    <div class="block d-flex">
-                                        <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="search" placeholder="Search for store">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-12">
-                                    <div class="block d-flex">
-                                        <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="search" placeholder="Search for store">
-                                        <!-- Search Button -->
-                                        <button class="btn btn-main">SEARCH</button>
+                                <div class="col-12">
+                                    <div class="ui-widget">
+                                        <div class="block d-flex">
+                                            <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" name="query" id="query" placeholder="Buscar por...">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </form>
-
                     </div>
-
                 </div>
             </div>
         </div>
         <!-- Container End -->
     </section>
-
     <!--===================================
 =            Client Slider            =
 ====================================-->
-
     <?= $this->include('Web/Layout/_session_messages'); ?>
     <?= $this->renderSection('content'); ?>
-
-
 
     <!--============================
 =            Footer            =
@@ -217,8 +207,11 @@
     <script src="<?= site_url('web/plugins/fancybox/jquery.fancybox.pack.js'); ?>"></script>
     <script src="<?= site_url('web/plugins/smoothscroll/SmoothScroll.min.js'); ?>"></script>
     <script src="<?= site_url('web/js/scripts.js'); ?>"></script>
-    <script src="<?= site_url('manager_assets/assets/vendor/toastr/toastr.min.js'); ?>"></script>
+    <script src="<?= site_url('web/plugins/toastr/toastr.min.js'); ?>"></script>
     <script src="<?= site_url('web/plugins/loadingoverlay/loadingoverlay.min.js'); ?>"></script>
+
+    <?php echo $this->include('Web/Layout/Scripts/_autocomplete'); ?>
+
     <?= $this->renderSection('scripts'); ?>
 
     <script>

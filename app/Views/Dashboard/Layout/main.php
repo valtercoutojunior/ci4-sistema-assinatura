@@ -43,7 +43,9 @@
       border-radius: .2rem;
     }
 
-    .img-custom {}
+    .img-custom {
+      max-width: 50% !important;
+    }
 
     select {
       height: 50px !important;

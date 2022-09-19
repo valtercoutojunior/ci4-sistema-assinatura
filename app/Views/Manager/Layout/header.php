@@ -242,7 +242,7 @@
                             <?= csrf_field(); ?>
                             <button type="submit" class="dropdown-item d-flex align-items-center">
                                 <i class="bi bi-box-arrow-right"></i>
-                                <span>Sign Out</span>
+                                <span><?= lang('App.logout'); ?></span>
                             </button>
                         </form>
                     </li>
@@ -252,5 +252,4 @@
 
         </ul>
     </nav><!-- End Icons Navigation -->
-
 </header>
