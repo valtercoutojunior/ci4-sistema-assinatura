@@ -57,9 +57,7 @@
             line-height: 1.5;
             border-radius: .2rem;
         }
-    </style>
 
-    <style>
         /* Muda o backgroud do autocomplete */
         .ui-menu-item .ui-menu-item-wrapper.ui-state-active {
             background: #fff !important;
@@ -68,14 +66,20 @@
 
         }
 
-
-        /**
-         * Para a imagem do autocomplete
-         */
+        /*** Para a imagem do autocomplete */
         .image-autocomplete {
-            max-width: 80px !important;
+            max-width: 65px !important;
+            padding-left: 10px !important;
+            margin-top: 15px !important;
+            margin-bottom: 12px !important;
+            margin-left: 5px !important;
+        }
+
+        li.ui-menu-item:hover {
+            background-color: #fafafa !important;
         }
     </style>
+
 
     <?php echo $this->renderSection('styles'); ?>
 

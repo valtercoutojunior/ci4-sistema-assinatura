@@ -365,12 +365,9 @@ class AdvertModel extends MyBaseModel
         return $builder->countAllResults();
     }
 
-
     /**::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
      * :::::::::: PERGUNTAS E RESPOSTAS :::::::::::::::::::::::::::::::::::::::::
      :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-
-
     public function getAdvertQuestions(int $advertID): array
     {
         $builder = $this->db->table('adverts_questions');
@@ -419,5 +416,26 @@ class AdvertModel extends MyBaseModel
             log_message('error', '[ERROR] {exception}', ['exception' => $e]);
             die('Erro ao responder pergunta');
         }
+    }
+
+    //--------------------- Pesquisar Autocomplete -------------////
+    public function getAllAdvertsByTerm(string $term = null): array
+    {
+        $this->setSQLMode();
+        $builder = $this;
+
+        $tableFields = [
+            'adverts.id',
+            'adverts.code',
+            'adverts.title',
+            'adverts_images.image AS images',
+        ];
+        $builder->select($tableFields);
+        $builder->join('adverts_images', 'adverts_images.advert_id = adverts.id', 'LEFT'); //nem todos os anuncios terão imagens
+        $builder->groupBy('adverts.id'); //Para não repetir os registros
+        $builder->orderBy('adverts.id', 'DESC'); //ordenação de forma decrecente
+        $builder->where('is_published', true); //Apenas anuncios publicados
+        $builder->like('title', $term, 'both');
+        return $builder->findAll();
     }
 }

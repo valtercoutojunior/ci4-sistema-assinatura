@@ -144,12 +144,11 @@ class HomeController extends BaseController
 
     public function search()
     {
+        //Garante que seja feito o request somente como ajax
         if (!$this->request->isAJAX()) {
             return redirect()->back();
         }
 
-        echo '<pre>';
-        print_r($this->request->getGet());
-        exit;
+        return $this->response->setJSON($this->advertService->getAllAdvertsByTerm($this->request->getGet('term')));
     }
 }

@@ -385,6 +385,26 @@ class AdvertService
         }
     }
 
+
+
+    //----------------------- Serach --------------//
+    public function getAllAdvertsByTerm(string $term = null): array
+    {
+        $adverts = $this->advertModel->getAllAdvertsByTerm($term);
+        $data = [];
+
+        foreach ($adverts as $advert) {
+            $data[] = [
+                'code'      => $advert->code,
+                'value'     => $advert->title,
+                'label'     => $advert->image(classImage: 'image-autocomplete rounded-lg', sizeImage: 'small') . ' ' . $advert->title,
+            ];
+        }
+
+        return $data;
+    }
+
+
     private function fireAdvertsEvents(Advert $advert, bool $notifyUserPublished)
     {
         $advert->email = !empty($advert->email) ? $advert->email : $this->user->email;

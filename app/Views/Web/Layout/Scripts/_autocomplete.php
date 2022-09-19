@@ -2,28 +2,21 @@
 <script src="<?php echo site_url('web/plugins/auto-complete/jquery-ui.js'); ?>"></script>
 <script>
     $(function() {
-
         $("#query").autocomplete({
-
             minLength: 4, // Tamanho mínimo de 4 caractéres para começar a pesquisar
             source: function(request, response) {
-
                 $.ajax({
-
                     url: "<?php echo route_to('adverts.search'); ?>",
                     dataType: "json",
                     data: {
                         term: request.term
                     },
                     success: function(data) {
-
                         if (data.length < 1) {
-
                             var data = [{
-                                label: 'Não encontramos o que está procurando....',
+                                label: 'Ops!!! Nenhum item encontrado com esses parâmetros',
                                 value: -1
                             }];
-
                         }
                         response(data); // Aqui temos valor no data
 
