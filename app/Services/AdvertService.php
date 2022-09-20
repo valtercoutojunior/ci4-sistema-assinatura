@@ -326,11 +326,16 @@ class AdvertService
         }
     }
 
-    public function tryDeleteAdvert(int $advertID)
+    public function tryDeleteAdvert(int $advertID, bool $wantValidateAdvert = true)
     {
         try {
-            $advert = $this->getAdvertByID($advertID, withDeleted: true);
-            $this->advertModel->tryDeleteAdvert($advert->id);
+            if ($wantValidateAdvert) {
+                $advert = $this->getAdvertByID($advertID, withDeleted: true);
+                $this->advertModel->tryDeleteAdvert($advert->id);
+                return true;
+            }
+            $this->advertModel->tryDeleteAdvert($advertID);
+            return true;
         } catch (\Exception $e) {
             log_message('error', '[ERROR] {exception}', ['exception' => $e]);
             die('Error deleting data service');

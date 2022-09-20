@@ -13,5 +13,6 @@ $routes->group('api', ['namespace' => 'App\Controllers\API\V1'], static function
 
         $routes->get('my', 'AdvertsUserController::index');
         $routes->get('my/(:num)', 'AdvertsUserController::getUserAdvert/$1');
+        $routes->delete('my/(:num)', 'AdvertsUserController::deleteUserAdvert/$1');
     });
 });

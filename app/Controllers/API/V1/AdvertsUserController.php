@@ -44,4 +44,17 @@ class AdvertsUserController extends BaseController
             ]
         );
     }
+
+    public function deleteUserAdvert(int $advertID = null)
+    {
+        $advert = $this->advertService->getAdvertByID($advertID);
+        $this->advertService->tryDeleteAdvert($advert->id, wantValidateAdvert: false);
+
+        return $this->respond(
+            [
+                'code' => 200,
+                'message' => lang('App.success_deleted')
+            ]
+        );
+    }
 }
