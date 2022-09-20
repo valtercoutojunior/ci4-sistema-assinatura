@@ -10,9 +10,15 @@ $routes->group('api', ['namespace' => 'App\Controllers\API\V1'], static function
 
     //CRUD - Anuncios ///IMPORTANT não podemos usar rotas nomeadas
     $routes->group('adverts', ['namespace' => 'App\Controllers\API\V1', 'filter' => 'subscription:api'], static function ($routes) {
-
         $routes->get('my', 'AdvertsUserController::index');
         $routes->get('my/(:num)', 'AdvertsUserController::getUserAdvert/$1');
         $routes->delete('my/(:num)', 'AdvertsUserController::deleteUserAdvert/$1');
     });
+
+    //CRUD - Categorias ///IMPORTANT não podemos usar rotas nomeadas
+    // $routes->group('categories', ['namespace' => 'App\Controllers\API\V1', 'filter' => 'subscription:api'], static function ($routes) {
+    //     $routes->get('my', 'CategoriesController::index');
+    // });
+
+    $routes->resource('categories', ['only' => ['index'], 'controller' => 'CategoriesController', 'filter' => 'subscription:api']);
 });

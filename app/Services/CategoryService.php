@@ -215,4 +215,25 @@ class CategoryService
     {
         return $this->categoryModel->getCategoriesFromPublishedAdverts($limit);
     }
+
+    //--------- metodo para api --------/////
+    public function getCategoriesPaginated(int $perPage = null, int $page = null)
+    {
+        $categories = $this->categoryModel->paginate(perPage: $perPage, page: $page);
+
+        $pager = (!empty($categories) ? $this->categoryModel->pager->getDetails() : []);
+
+        if (empty($categories)) {
+            return [
+                'categories' => [],
+                'pager' => $pager
+            ];
+        }
+
+
+        return [
+            'categories'   => $categories,
+            'pager'     => $pager
+        ];
+    }
 }
