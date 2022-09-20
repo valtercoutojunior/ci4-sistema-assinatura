@@ -85,6 +85,21 @@ class AuthFilter extends AuthenticationFilter implements FilterInterface
             return $this->fail('Unauthenticated.', ResponseInterface::HTTP_UNAUTHORIZED);
         }
 
+        if (url_is('api/dashboard*')) {
+            return $this->fail('Unauthenticated.', ResponseInterface::HTTP_UNAUTHORIZED);
+        }
+
+        if (url_is('api/adverts*')) {
+            return $this->fail('Unauthenticated.', ResponseInterface::HTTP_UNAUTHORIZED);
+        }
+
+        //Garantimos que realmente o client está requisitando somente pela api
+        if (in_array('api', $guards)) {
+            return $this->fail('Unauthenticated.', ResponseInterface::HTTP_UNAUTHORIZED);
+        }
+
+
+
         return redirect()->route('login');
     }
 }
