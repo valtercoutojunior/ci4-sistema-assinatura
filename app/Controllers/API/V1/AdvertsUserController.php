@@ -20,9 +20,10 @@ class AdvertsUserController extends BaseController
 
     public function index()
     {
-        /** @todo recuperar a paginação  */
+        $perPage = $this->request->getGet('perPage');
+        $page = $this->request->getGet('page');
 
-        $adverts = (object) $this->advertService->getAllAdvertsForUserAPI();
+        $adverts = (object) $this->advertService->getAllAdvertsForUserAPI(perPage: $perPage, page: $page);
 
         $pager = $adverts->pager;
         return $this->respond(
