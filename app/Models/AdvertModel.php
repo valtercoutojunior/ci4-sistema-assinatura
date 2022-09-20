@@ -12,12 +12,7 @@ class AdvertModel extends MyBaseModel
     public function __construct()
     {
         parent::__construct();
-
-        /**
-         *  @todo  $this->user = service('auth')->user() ?? auth('api')->user();
-         * Será alterado quando estivermos usando api
-         */
-        $this->user  = service('auth')->user();
+        $this->user  = service('auth')->user() ?? auth('api')->user();
     }
 
     protected $DBGroup          = 'default';
@@ -437,5 +432,43 @@ class AdvertModel extends MyBaseModel
         $builder->where('is_published', true); //Apenas anuncios publicados
         $builder->like('title', $term, 'both');
         return $builder->findAll();
+    }
+
+    /**::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+     * :::::::::: METODOS PARA API ::::::::::::::::::::::::::::::::::::::::::::::
+     :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    public function getAllAdvertsForUserAPI(int $perPage = null, int $page = null)
+    {
+        $this->setSQLMode();
+
+        $builder = $this;
+
+        //Campos buscados e fazendo os joins nas tabelas
+        $tableFields = [
+            'adverts.*',
+            'categories.name AS category',
+            'categories.slug AS category_slug',
+            'users.username', //mostra quem é o dono dos anuncios
+
+        ];
+
+        $builder->select($tableFields);
+        $builder->join('categories', 'categories.id = adverts.category_id');
+        $builder->join('users', 'users.id = adverts.user_id');
+        $builder->where('adverts.user_id', $this->user->id);
+        $builder->groupBy('adverts.id'); //Para não repetir os registros
+        $builder->orderBy('adverts.id', 'DESC'); //ordenação de forma decrecente
+
+        $adverts = $this->paginate(perPage: $perPage, page: $page);
+
+        //Pega as imagens
+        if (!empty($adverts)) {
+            foreach ($adverts as $advert) {
+                $advert->images = $this->getAdvertImages($advert->id);
+            }
+        }
+
+
+        return $adverts;
     }
 }

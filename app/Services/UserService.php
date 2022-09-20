@@ -14,7 +14,7 @@ class UserService
 
     public function __construct()
     {
-        $this->user       = service('auth')->user();
+        $this->user  = service('auth')->user() ?? auth('api')->user();
         $this->userModel  = Factories::models(UserModel::class);
     }
 

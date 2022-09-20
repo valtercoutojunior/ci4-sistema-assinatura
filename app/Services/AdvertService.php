@@ -16,8 +16,7 @@ class AdvertService
 
     public function __construct()
     {
-        /** @todo Alterar quando for trabalhar com (API)....  */
-        $this->user         = service('auth')->user();
+        $this->user  = service('auth')->user() ?? auth('api')->user();
         $this->advertModel  = Factories::models(AdvertModel::class);
     }
 
@@ -385,9 +384,6 @@ class AdvertService
         }
     }
 
-
-
-    //----------------------- Serach --------------//
     public function getAllAdvertsByTerm(string $term = null): array
     {
         $adverts = $this->advertModel->getAllAdvertsByTerm($term);
@@ -404,6 +400,43 @@ class AdvertService
         return $data;
     }
 
+    /**::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+     * :::::::::: METODOS PARA API ::::::::::::::::::::::::::::::::::::::::::::::
+     :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    public function getAllAdvertsForUserAPI(int $perPage = null, int $page = null): array
+    {
+        $adverts = $this->advertModel->getAllAdvertsForUserAPI($perPage, $page);
+        $pager = (!empty($adverts) ? $this->advertModel->pager->getDetails() : []);
+
+        if (empty($adverts)) {
+            return [
+                'adverts' => [],
+                'pager' => $pager
+            ];
+        }
+
+        $data = [];
+        foreach ($adverts as $advert) {
+            $data[] = [
+                'id'                => $advert->id,
+                'belongs_to'        => $advert->username,
+                'images'            => $advert->image(),
+                'title'             => $advert->title,
+                'price'             => $advert->price,
+                'category'          => $advert->category,
+                'category_id'       => $advert->category_id,
+                'category_slug'     => $advert->category_slug,
+                'is_published'      => $advert->is_published,
+                'address'           => $advert->address(),
+                'created_at'        => $advert->created_at,
+                'updated_at'        => $advert->updated_at,
+            ];
+        }
+        return [
+            'adverts'   => $data,
+            'pager'     => $pager
+        ];
+    }
 
     private function fireAdvertsEvents(Advert $advert, bool $notifyUserPublished)
     {

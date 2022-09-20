@@ -33,14 +33,14 @@ class GerencianetService
 
     public function __construct()
     {
+        $this->user  = service('auth')->user() ?? auth('api')->user();
+
         $this->options = [
             'client_id'     => env('GERENCIANET_CLIENT_ID'),
             'client_secret' => env('GERENCIANET_CLIENT_SECRET'),
             'sandbox'       => env('GERENCIANET_SANDBOX'), // altere conforme o ambiente (true = homologação e false = producao)
             'timeout'       => env('GERENCIANET_TIMEOUT'),
         ];
-        //Pega todos os dados do usuário logado
-        $this->user = service('auth')->user();
         $this->subscriptionService = Factories::class(SubscriptionService::class);
     }
 

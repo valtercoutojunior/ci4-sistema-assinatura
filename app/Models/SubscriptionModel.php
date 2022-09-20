@@ -11,8 +11,7 @@ class SubscriptionModel extends MyBaseModel
     public function __construct()
     {
         parent::__construct();
-        /** @todo Será alterado quando estivermos trabalhando com api */
-        $this->user = service('auth')->user();
+        $this->user  = service('auth')->user() ?? auth('api')->user();
     }
 
     protected $table            = 'subscriptions';
