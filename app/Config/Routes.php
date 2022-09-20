@@ -81,6 +81,15 @@ $routes->post('toask/(:any)', 'DetailsController::toask/$1', ['as' => 'details.t
  :::::::::::::::::::::::::::::::::::::::*/
 $routes->get('search', 'HomeController::search', ['as' => 'adverts.search']);
 
+
+$routes->group('jwt', function ($routes) {
+    $routes->post('login', 'JwtauthController::login');
+    $routes->post('logout', 'JwtauthController::logout', ['filter' => 'auth:api']);
+    $routes->post('refresh', 'JwtauthController::refresh', ['filter' => 'auth:api']);
+    $routes->match(['get', 'post'], 'user', 'JwtauthController::user', ['filter' => 'auth:api']);
+});
+
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

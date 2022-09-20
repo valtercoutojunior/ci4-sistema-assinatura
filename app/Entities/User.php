@@ -16,13 +16,15 @@ use Fluent\Auth\Traits\HasAccessTokensTrait;
 use Fluent\Auth\Traits\MustVerifyEmailTrait;
 
 use App\Traits\AdvertAuthorizationTrait; //Meu trait
+use Fluent\JWTAuth\Contracts\JWTSubjectInterface;
 
 class User extends Entity implements
     AuthenticatorInterface,
     AuthorizableInterface,
     HasAccessTokensInterface,
     ResetPasswordInterface,
-    VerifyEmailInterface
+    VerifyEmailInterface,
+    JWTSubjectInterface
 {
     use AuthenticatableTrait;
     use AuthorizableTrait;
@@ -65,5 +67,21 @@ class User extends Entity implements
     public function fullname()
     {
         return "{$this->name} {$this->last_name}";
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }

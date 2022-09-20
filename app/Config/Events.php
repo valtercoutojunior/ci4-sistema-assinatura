@@ -64,3 +64,5 @@ Events::on('notify_manager', function ($email) {
 Events::on('notify_user_advert', function ($email, $message) {
     (new \App\Notifications\UserAdvertNotification($email, $message))->send();
 });
+
+Events::on('pre_system', [\App\Providers\AuthServiceProvider::class, 'register']);
