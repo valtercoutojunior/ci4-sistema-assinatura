@@ -8,9 +8,10 @@ $routes->group('api', ['namespace' => 'App\Controllers\API\V1'], static function
     $routes->match(['get', 'post'], 'user', 'JwtauthController::user', ['filter' => 'auth:api']);
 
 
-    //CRUD - Anuncios 
+    //CRUD - Anuncios ///IMPORTANT não podemos usar rotas nomeadas
     $routes->group('adverts', ['namespace' => 'App\Controllers\API\V1', 'filter' => 'subscription:api'], static function ($routes) {
 
-        $routes->get('my', 'AdvertsUserController::index'); //Não pode usar rotas nomeadas
+        $routes->get('my', 'AdvertsUserController::index');
+        $routes->get('my/(:num)', 'AdvertsUserController::getUserAdvert/$1');
     });
 });

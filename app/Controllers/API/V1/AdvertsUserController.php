@@ -34,4 +34,14 @@ class AdvertsUserController extends BaseController
             ]
         );
     }
+
+    public function getUserAdvert(int $advertID = null)
+    {
+        return $this->respond(
+            [
+                'code' => 200,
+                'advert' => $this->advertService->getAdvertByID($advertID)
+            ]
+        );
+    }
 }

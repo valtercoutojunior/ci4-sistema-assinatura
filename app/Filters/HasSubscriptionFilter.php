@@ -43,9 +43,9 @@ class HasSubscriptionFilter implements FilterInterface
 
                 //Verifica se a requisição é pela api
                 if (url_is('api*')) {
-                    return $this->fail('Hummm... você ainda não possui um Plano bem lindão', ResponseInterface::HTTP_UNAUTHORIZED);
+                    return $this->fail('Hummm... Que pena você ainda não tem nenhum plano de assinatura', ResponseInterface::HTTP_UNAUTHORIZED);
                 }
-                return redirect()->back()->with('danger', 'Hummm... você ainda não possui um Plano bem lindão');
+                return redirect()->back()->with('danger', 'Hummm... Que pena você ainda não tem nenhum plano de assinatura');
             }
         }
     }
