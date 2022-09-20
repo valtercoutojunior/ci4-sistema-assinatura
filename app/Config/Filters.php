@@ -77,18 +77,11 @@ class Filters extends BaseConfig
         'before' => [
             // 'honeypot',
 
-            // 'csrf' => [
-            //     'except' => [
-            //         'api/*'
-            //     ]
-            // ],
-
             'csrf' => [
                 'except' => [
-                    'jwt/*'
+                    'api/*'
                 ]
             ],
-
 
             // 'invalidchars',
         ],

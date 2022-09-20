@@ -48,6 +48,7 @@ if (file_exists($manage = ROOTPATH . 'routes/manager.php')) {
 if (file_exists($dashboard = ROOTPATH . 'routes/dashboard.php')) {
     require $dashboard;
 }
+
 // Rotas para API Rest
 if (file_exists($api = ROOTPATH . 'routes/api.php')) {
     require $api;
@@ -80,14 +81,6 @@ $routes->post('toask/(:any)', 'DetailsController::toask/$1', ['as' => 'details.t
  * :::::: autocomplete main e advert :::::
  :::::::::::::::::::::::::::::::::::::::*/
 $routes->get('search', 'HomeController::search', ['as' => 'adverts.search']);
-
-
-$routes->group('jwt', function ($routes) {
-    $routes->post('login', 'JwtauthController::login');
-    $routes->post('logout', 'JwtauthController::logout', ['filter' => 'auth:api']);
-    $routes->post('refresh', 'JwtauthController::refresh', ['filter' => 'auth:api']);
-    $routes->match(['get', 'post'], 'user', 'JwtauthController::user', ['filter' => 'auth:api']);
-});
 
 
 /*
