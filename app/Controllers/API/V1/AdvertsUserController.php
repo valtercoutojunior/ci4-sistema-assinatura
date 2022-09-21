@@ -3,6 +3,8 @@
 namespace App\Controllers\API\V1;
 
 use App\Controllers\BaseController;
+use App\Entities\Advert;
+use App\Requests\AdvertRequest;
 use App\Services\AdvertService;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\Config\Factories;
@@ -54,6 +56,33 @@ class AdvertsUserController extends BaseController
             [
                 'code' => 200,
                 'message' => lang('App.success_deleted')
+            ]
+        );
+    }
+
+    public function updateUserAdvert(int $advertID = null)
+    {
+        $advert = $this->advertService->getAdvertByID($advertID);
+        $request = (array)$this->request->getJSON();
+        $advert->fill($request);
+        $this->advertService->trySaveAdvert($advert);
+        return $this->respondUpdated(
+            [
+                'code' => 200,
+                'message' => lang('App.success_saved')
+            ]
+        );
+    }
+
+    public function createUserAdvert()
+    {
+        Factories::class(AdvertRequest::class)->validateBeforeSave('advert');
+        $advert = new Advert($this->request->getVar());
+        $this->advertService->trySaveAdvert($advert);
+        return $this->respondCreated(
+            [
+                'code' => 201,
+                'message' => lang('App.success_saved')
             ]
         );
     }
