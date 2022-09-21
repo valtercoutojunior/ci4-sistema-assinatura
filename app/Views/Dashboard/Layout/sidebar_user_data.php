@@ -21,35 +21,26 @@
 
                 <li class="<?= url_is("{$locale}/dashboard/my-plan") ? 'active' : ''; ?>">
                     <a href="<?= route_to('my.plan'); ?>" class="btn-gn">
-                        <i class="fa fa-bookmark-o mr-2"></i>
+                        <i class="fa fa-usd mr-2"></i>
                         <?= lang('App.sidebar.dashboard.my_plan'); ?>
                     </a>
                 </li>
 
                 <li class="<?= url_is("{$locale}/dashboard/adverts/my") ? 'active' : ''; ?>">
                     <a href="<?= route_to('adverts.my'); ?>" class="btn-gn">
-                        <i class="fa fa-external-link mr-2"></i>
+                        <i class="fa fa-bullhorn mr-2"></i>
                         <?= lang('App.sidebar.dashboard.my_adverts'); ?>
                     </a>
                 </li>
 
-                <li>
-                    <a href="">
-                        <i class="fa fa-bookmark-o mr-2">
-                        </i>Favourite Ads <span>5</span>
+                <li class="<?= url_is("{$locale}/dashboard/adverts/my-archived") ? 'active' : ''; ?>">
+                    <a href="<?= route_to('my.archived.adverts'); ?>" class="btn-gn">
+                        <i class="fa fa-archive mr-2"></i>
+                        <?= lang('App.btn_all_archive'); ?>
                     </a>
                 </li>
 
-                <li>
-                    <a href=""><i class="fa fa-file-archive-o mr-2">
-                        </i>Archived Ads <span>12</span>
-                    </a>
-                </li>
-                <li>
-                    <a href=""><i class="fa fa-bolt mr-2">
-                        </i>Pending Approval<span>23</span>
-                    </a>
-                </li>
+
 
                 <?= form_open('logout'); ?>
                 <button type="submit" class="btn btn-default bg-white py-2 pl-2 text-dark">

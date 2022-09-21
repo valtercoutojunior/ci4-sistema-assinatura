@@ -18,7 +18,7 @@ return [
     'text_images_info_upload'       => 'Apenas arquivos jpg, jpeg, png, e webp. Tamanho máximo: 2048mb. Dimesões máximas: 2560 x 1080 pixels.',
     'text_rule_to_be_published'     => 'Para que seus anúncios sejam publicados, eles precisam ter um endereço definido, pois só assim eles serão exibidos nas pesquisas.',
     'cannot_be_published'           => 'Não pode ser publicado, pois não possui endereço definido',
-    'text_total_user_advert'        => 'Total de anúncios',
+    'text_total_adverts'            => 'Total de anúncios',
     'text_total_advert_published'   => 'Anúncios Publicados',
     'text_total_waiting_approval'   => 'Aguardando Aprovação',
     'text_total_archived'           => 'Anúncios Arquivados',

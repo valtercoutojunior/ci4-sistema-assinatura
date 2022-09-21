@@ -25,7 +25,13 @@ class DashboardController extends BaseController
 
     public function index()
     {
-        return view('Dashboard/Home/index');
+        $data = [
+            'totalUserAdverts' => $this->gerencianetService->countAlluserAdverts(withDeleted: true),
+            'totalUserPublishedAdverts' => $this->gerencianetService->countAlluserAdverts(withDeleted: false, criteria: ['is_published' => true]),
+            'totalUserWaitingAdverts' => $this->gerencianetService->countAlluserAdverts(withDeleted: true, criteria: ['is_published' => false]),
+            'totalUserArchivedAdverts' => $this->gerencianetService->countAlluserAdverts(withDeleted: true, criteria: ['deleted_at !=' => null]),
+        ];
+        return view('Dashboard/Home/index', $data);
     }
 
     public function myPlan()
