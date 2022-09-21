@@ -6,19 +6,11 @@
                 <div class="advance-search">
                     <form>
                         <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <input type="text" class="form-control" id="inputtext4" placeholder="What are you looking for">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <input type="text" class="form-control" id="inputCategory4" placeholder="Category">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <input type="text" class="form-control" id="inputLocation4" placeholder="Location">
-                            </div>
-                            <div class="form-group col-md-2">
 
-                                <button type="submit" class="btn btn-primary">Search Now</button>
+                            <div class="form-group col-md-12 ui-widget">
+                                <input type="text" class="form-control" id="query" name="query" placeholder="O que está procurando?">
                             </div>
+
                         </div>
                     </form>
                 </div>

@@ -27,11 +27,44 @@
   <link href="<?= site_url('web/plugins/jquery-nice-select/css/nice-select.css'); ?>" rel="stylesheet">
   <link href="<?= site_url('web/plugins/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css'); ?>" rel="stylesheet">
   <link href="<?= site_url('manager_assets/assets/vendor/toastr/toastr.min.css'); ?>" rel="stylesheet" />
+
+  <!-- Para o autocomplete -->
+  <link rel="stylesheet" href="<?= site_url('web/plugins/auto-complete/jquery-ui.css'); ?>" />
+
   <!-- CUSTOM CSS -->
   <link href="<?= site_url('web/css/style.css'); ?>" rel="stylesheet">
 
   <?= $this->renderSection('styles'); ?>
   <style>
+    .btn-sm {
+      padding: 6px 20px;
+      font-size: .875rem;
+      line-height: 1.5;
+      border-radius: .2rem;
+    }
+
+    /* Muda o backgroud do autocomplete */
+    .ui-menu-item .ui-menu-item-wrapper.ui-state-active {
+      background: #fff !important;
+      color: #007bff !important;
+      border: none;
+
+    }
+
+    /*** Para a imagem do autocomplete */
+    .image-autocomplete {
+      max-width: 65px !important;
+      padding-left: 10px !important;
+      margin-top: 15px !important;
+      margin-bottom: 12px !important;
+      margin-left: 5px !important;
+    }
+
+    li.ui-menu-item:hover {
+      background-color: #fafafa !important;
+    }
+
+
     #myDataTable_filter .form-control {
       height: 30px !important;
     }
@@ -88,6 +121,8 @@
   <script src="<?= site_url('web/js/scripts.js'); ?>"></script>
   <script src="<?= site_url('manager_assets/assets/vendor/toastr/toastr.min.js'); ?>"></script>
   <script src="<?= site_url('web/plugins/loadingoverlay/loadingoverlay.min.js'); ?>"></script>
+
+  <?php echo $this->include('Web/Layout/Scripts/_autocomplete'); ?>
   <?= $this->renderSection('scripts'); ?>
   <script>
     $(document).ready(function() {
